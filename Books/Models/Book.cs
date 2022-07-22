@@ -28,6 +28,15 @@
             _authors = authors;
         }
 
+        public Book(int id, string title, string format, Category category)
+        {
+            Id = id;
+            Title = title;
+            Format = format;
+            Category = category;
+            _authors = new List<Author>();
+        }
+
         public bool ChangeTitle(string newTitle)
         {
             if (string.IsNullOrEmpty(newTitle)) throw new ArgumentException(nameof(newTitle));

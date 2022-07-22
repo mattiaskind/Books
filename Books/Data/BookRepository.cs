@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace Books.Data
 {
-    class BookRepository : IBookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -22,7 +22,7 @@ namespace Books.Data
 
         public async Task<Book?> GetBookByIdAsync(int id)
         {
-            return await Books.SingleOrDefaultAsync(x => x.Id == id);
+            return await Books.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Book> CreateBookAsync(Book book)

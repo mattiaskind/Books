@@ -30,10 +30,10 @@ namespace Books.Services
             }).ToList();
         }
 
-        public async Task<ViewBookDto> GetBookByIdAsync(int id)
+        public async Task<ViewBookDto?> GetBookByIdAsync(int id)
         {
             var book = await _bookRepository.GetBookByIdAsync(id);
-            if (book is null) return new ViewBookDto { };
+            if (book is null) return null;
             return new ViewBookDto
             {
                 Id = book.Id,
@@ -54,7 +54,7 @@ namespace Books.Services
             var newBook = new Book(newBookDto.Title, newBookDto.Format, category);
             foreach (string authorName in newBookDto.Authors)
             {
-                var author = await _authorRepository.GetAuthorByName(authorName);
+                var author = await _authorRepository.GetAuthorByNameAsync(authorName);
                 if (author is null) newBook.AddAuthor(new Author(authorName));
                 else newBook.AddAuthor(author);
             }
@@ -85,7 +85,7 @@ namespace Books.Services
             List<Author> newListOfAuthors = new();
             foreach (var author in changedBook.Authors)
             {
-                var existingAuthor = await _authorRepository.GetAuthorByName(author);
+                var existingAuthor = await _authorRepository.GetAuthorByNameAsync(author);
                 if (existingAuthor is null)
                 {
                     newListOfAuthors.Add(new Author(author));

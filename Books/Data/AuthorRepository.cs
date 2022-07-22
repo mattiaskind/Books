@@ -1,6 +1,7 @@
 using Books.Interfaces;
 using Books.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 
 namespace Books.Data
 {
@@ -13,14 +14,51 @@ namespace Books.Data
             _context = context;
         }
 
-        public async Task<bool> AuthorExists(string authorName)
+        public async Task<IEnumerable<Author>> GetAllAuthorsAsync()
+        {
+            return await _context.Authors.ToListAsync();
+        }
+
+        public async Task<Author?> GetAuthorByIdAsync(int id)
+        {
+            return await _context.Authors.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Author?> GetAuthorByNameAsync(string name)
+        {
+            return await _context.Authors.FirstOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task<int> GetNumberOfBooksAsync(int id)
+        {
+            return await _context.Authors
+                .Where(x => x.Id == id)
+                .SelectMany(x => x.Books.Select(x => x.Id))
+                .CountAsync();
+        }
+
+        public async Task<bool> AuthorExistsAsync(string authorName)
         {
             return await _context.Authors.AnyAsync(x => x.Name == authorName);
         }
 
-        public async Task<Author?> GetAuthorByName(string name)
+        public async Task<bool> DeleteAuthorAsync(Author author)
         {
-            return await _context.Authors.FirstOrDefaultAsync(x => x.Name == name);
+            _context.Authors.Remove(author);
+            return await SaveAsync();
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbException)
+            {
+                return false;
+            }
         }
     }
 }

@@ -5,10 +5,7 @@ namespace Books.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Author> Authors => Set<Author>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Book> Books => Set<Book>();

@@ -21,5 +21,13 @@
             Name = newName;
             return true;
         }
+
+        public bool AddBook(Book book)
+        {
+            if (book == null) return false;
+            if (_books.Any(x => x.Title == book.Title)) return false;
+            _books.Add(book);
+            return true;
+        }
     }
 }
