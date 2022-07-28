@@ -17,10 +17,5 @@ namespace Books.Data
 
             builder.Entity<Author>().Navigation(x => x.Books).Metadata.SetField("_books");
         }
-
-        internal Task<Category> Where()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

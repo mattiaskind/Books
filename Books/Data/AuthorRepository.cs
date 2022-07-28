@@ -37,14 +37,31 @@ namespace Books.Data
                 .CountAsync();
         }
 
-        public async Task<bool> AuthorExistsAsync(string authorName)
+        public async Task<bool> AuthorExistsAsync(int id)
         {
-            return await _context.Authors.AnyAsync(x => x.Name == authorName);
+            return await _context.Authors.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> AuthorNameExistsAsync(string name)
+        {
+            return await _context.Authors.AnyAsync(x => x.Name == name);
         }
 
         public async Task<bool> DeleteAuthorAsync(Author author)
         {
             _context.Authors.Remove(author);
+            return await SaveAsync();
+        }
+        public async Task<Author> CreateAuthorAsync(Author author)
+        {
+            _context.Authors.Add(author);
+            await SaveAsync();
+            return author;
+        }
+
+        public async Task<bool> UpdateAuthorAsync(Author author)
+        {
+            _context.Authors.Update(author);
             return await SaveAsync();
         }
 

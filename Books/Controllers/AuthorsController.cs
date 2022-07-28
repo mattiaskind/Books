@@ -30,6 +30,39 @@ namespace Books.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<ViewAuthorDto>> CreateAuthor(CreateAuthorDto authorDto)
+        {
+            if (authorDto == null) return BadRequest();
+            if (await _service.CheckIfAuthorNameExists(authorDto.Name))
+            {
+                ModelState.AddModelError(",", "En författare med samma namn finns redan");
+                return StatusCode(422, ModelState);
+            }
+
+            var createdAuthor = await _service.CreateAuthorAsync(authorDto);
+
+            return CreatedAtAction(nameof(GetAuthorById), new { Id = createdAuthor.Id }, createdAuthor);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAuthorAsync(int id, CreateAuthorDto authorDto)
+        {
+            if (authorDto == null) return BadRequest();
+            if (!(await _service.CheckIfAuthorExistsAsync(id))) return NotFound();
+
+            var result = await _service.UpdateAuthorAsync(id, authorDto);
+            if (!result)
+            {
+                ModelState.AddModelError(",", "Författaren kunde inte uppdateras");
+                return StatusCode(500, ModelState);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuthor(int id)
         {

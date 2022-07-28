@@ -8,8 +8,11 @@ namespace Books.Interfaces
         Task<Author?> GetAuthorByIdAsync(int id);
         Task<Author?> GetAuthorByNameAsync(string name);
         Task<int> GetNumberOfBooksAsync(int id);
+        Task<Author> CreateAuthorAsync(Author author);
+        Task<bool> UpdateAuthorAsync(Author author);
         Task<bool> DeleteAuthorAsync(Author author);
-        Task<bool> AuthorExistsAsync(string authorName);
+        Task<bool> AuthorExistsAsync(int id);
+        Task<bool> AuthorNameExistsAsync(string name);
         Task<bool> SaveAsync();
     }
 }

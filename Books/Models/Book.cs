@@ -3,12 +3,12 @@
     public class Book
     {
         public int Id { get; private set; }
-        public string Title { get; private set; }
-        public string Format { get; private set; }
-        public Category Category { get; private set; }
+        public string Title { get; private set; } = string.Empty;
+        public string Format { get; private set; } = string.Empty;
+        public Category Category { get; private set; } = new Category();
 
         public IReadOnlyList<Author> Authors => _authors;
-        private List<Author> _authors;
+        private List<Author> _authors = new List<Author>();
 
         private Book() { }
 

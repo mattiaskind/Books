@@ -5,6 +5,11 @@
         public int Id { get; private set; }
         public string CategoryName { get; private set; }
 
+        public Category()
+        {
+            CategoryName = "Ej specificerat";
+        }
+
         public Category(string categoryName)
         {
             if (string.IsNullOrEmpty(categoryName)) throw new ArgumentException(nameof(categoryName));
